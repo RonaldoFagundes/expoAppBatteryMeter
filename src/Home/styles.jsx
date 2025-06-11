@@ -73,7 +73,7 @@ containerHeader:{
 
  headerList:{
    flexDirection:'row',
-   justifyContent:'space-between',
+   //justifyContent:'space-between',
    width: "auto",
    height: "auto",   
        
@@ -83,6 +83,20 @@ containerHeader:{
 
    backgroundColor:'#b4beb9'
  },
+
+
+ cardList:{
+   
+   flexDirection:'row',
+   //justifyContent:'space-between',
+   width: "auto",
+   height: "auto",   
+       
+   padding: 12,     
+   margin: 2,
+   borderRadius:10,
+   backgroundColor:'#b4beb9'
+},
 
 
 
@@ -99,18 +113,7 @@ containerHeader:{
   
 
 
-  cardList:{
-   
-   flexDirection:'row',
-   justifyContent:'space-between',
-   width: "auto",
-   height: "auto",   
-       
-   padding: 12,     
-   margin: 2,
-   borderRadius:10,
-   backgroundColor:'#b4beb9'
-},
+ 
 
 
 
@@ -133,16 +136,30 @@ statusOk:{
     width:20,
     height:20,
     borderRadius:20,
-    backgroundColor:'green'
+    backgroundColor:'green',
+    marginLeft:8
 },
 
-
-statusError:{
+statusWarning:{
    width:20,
    height:20,
    borderRadius:20,
-   backgroundColor:'red'
+   backgroundColor:'orange',
+   marginLeft:8
 },
+
+
+statusAlert:{
+   width:20,
+   height:20,
+   borderRadius:20,
+   backgroundColor:'red',
+    marginLeft:8
+},
+
+
+
+
 
 
 
@@ -172,6 +189,28 @@ boxBtn: {
 
 
    textBtn: {
+      fontSize: 16,
+      color: 'black',
+      fontWeight: 'bold',
+   },
+
+
+
+
+
+   contentWarning: {
+      width:'auto',
+      height:'auto',
+      alignItems:'center',
+      padding:20,
+      borderRadius:4,
+      backgroundColor:'#b4beb9'     
+   
+   },
+
+
+
+   textWarning: {
       fontSize: 16,
       color: 'black',
       fontWeight: 'bold',

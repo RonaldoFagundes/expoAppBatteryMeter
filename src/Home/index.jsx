@@ -52,11 +52,15 @@ export default function Home({ navigation }) {
   }, []);
 
 
-  const [isList, setIsList] = useState(false);  
+  const [isListOne, setIsListOne] = useState(false);
 
-  const [error, setError] = useState("");  
+  const [isListTwo, setIsListTwo] = useState(false);
 
-  const [listBattery, setListBattery] = useState([]);  
+  const [error, setError] = useState("");
+
+  const [listBattery, setListBattery] = useState([]);
+
+  const [sign, setSign] = useState("");
 
   const [graphicModal, setGraphicModal] = useState(false);
 
@@ -84,29 +88,31 @@ export default function Home({ navigation }) {
         (result) => {
 
           console.log(result);
-          
 
-          if(result != "notfound"){
 
-            setIsList(true);
+          if (result != "notfound") {
+
+           
+
+            setIsListOne(true);
             setListBattery(result);
-        
-          var count = Object.keys(result).length;
 
-          for (var i = 0; i < count; i++) {
+            var count = Object.keys(result).length;
 
-            dataArray.push({
-              id: result[i].id_bty,
-              res: result[i].condutancia_bty / 5000 * 100
-            });
-          }
+            for (var i = 0; i < count; i++) {
+
+              dataArray.push({
+                id: result[i].id_bty,
+                res: result[i].condutancia_bty / 5000 * 100,                
+              });
+            }
 
             setGraphicData(dataArray);
-         }else{
-            
-           setIsList(false);
-           setError(result);
-         }
+          } else {
+
+            setIsListOne(false);
+            setError(result);
+          }
 
         })
       .catch(function (error) {
@@ -121,111 +127,111 @@ export default function Home({ navigation }) {
 
 
 
-const stations = [];
+  const stations = [];
 
 
-const getStation = async () => {   
-   
-  await fetch(endpoint + "?action=list_station")
-     .then((res) => res.json())
-     .then(
-        (result) => { 
+  const getStation = async () => {
 
-          // console.log(result);
-
-           var count = Object.keys(result).length;
-              
-             for (var i = 0; i < count; i++) {
-
-              stations.push({
-                  value: result[i].id_sta+" - "+result[i].ref_sta
-              })
-
-            }           
-             setListStation(stations);
-
-          
-        })
-     .catch(function (error) {
-        console.log('erro => ' + error.message);
-     });     
-}
-
-
-
-
-
- const selectStation  = async () => {
-
-    console.log(fkStation);
-
-     await fetch(endpoint + "?action=list_analysis_by_fk", {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-            fkStation
-         })
-      })
-         .then((res) => res.json())
-         .then(
-         
-        (result) => {
-
-
-           if(result != "notfound"){
-
-             setIsList(true);
-             setReport(result);
-
-           }else{
-
-            setIsList(false);
-            setError(result);
-
-           } 
-
-          
-        })
-      .catch(function (error) {
-        console.log('erro => ' + error.message);
-      });
-
-
- }
-
-
-
-const getReport =  () => {
-  console.log("test");
-}
-
-
-/*
-  const getReport = async () => {
-
-    await fetch(endpoint + "?action=list_analysis")
+    await fetch(endpoint + "?action=list_station")
       .then((res) => res.json())
       .then(
         (result) => {
 
-          //  console.log(result);                  
-          setReport(result);
+          // console.log(result);
+
+          var count = Object.keys(result).length;
+
+          for (var i = 0; i < count; i++) {
+
+            stations.push({
+              value: result[i].id_sta + " - " + result[i].ref_sta
+            })
+
+          }
+          setListStation(stations);
+
+
         })
       .catch(function (error) {
         console.log('erro => ' + error.message);
       });
   }
-*/
 
 
 
 
-   const removeString =(value)=>{
+
+  const selectStation = async () => {
+
+    console.log(fkStation);
+
+    await fetch(endpoint + "?action=list_analysis_by_fk", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        fkStation
+      })
+    })
+      .then((res) => res.json())
+      .then(
+
+        (result) => {
+
+
+          if (result != "notfound") {
+
+            setIsListTwo(true);
+            setReport(result);
+
+          } else {
+
+            setIsListTwo(false);
+            setError(result);
+
+          }
+
+
+        })
+      .catch(function (error) {
+        console.log('erro => ' + error.message);
+      });
+
+
+  }
+
+
+
+  const getReport = () => {
+    console.log("test");
+  }
+
+
+  /*
+    const getReport = async () => {
+  
+      await fetch(endpoint + "?action=list_analysis")
+        .then((res) => res.json())
+        .then(
+          (result) => {
+  
+            //  console.log(result);                  
+            setReport(result);
+          })
+        .catch(function (error) {
+          console.log('erro => ' + error.message);
+        });
+    }
+  */
+
+
+
+
+  const removeString = (value) => {
     //let formatStr =   value.replace(/[^0-9]/g, '');
-     return value.replace(/[^0-9]/g, '');
- }
+    return value.replace(/[^0-9]/g, '');
+  }
 
 
 
@@ -278,79 +284,123 @@ const getReport =  () => {
 
             <View style={styles.headerList}>
 
-              <Text style={{ width: 30, marginLeft: 4, fontSize: 10 }}>
+              <Text style={{ width: 30, fontSize: 10 }}>
                 {`id`}
               </Text>
 
-              <Text style={{ width: 100, marginLeft: 4, fontSize: 10 }}>
+              <Text style={{ width: 30, fontSize: 10 ,marginRight:8}}>
                 {`tensao`}
               </Text>
 
-              <Text style={{ width: 100, marginLeft: 4, fontSize: 10 }}>
+              <Text style={{ width: 60, fontSize: 10, marginRight:8 }}>
                 {`condutancia`}
               </Text>
 
-              <Text style={{ width: 100, marginLeft: 4, fontSize: 10 }}>
+              <Text style={{ width: 30,  fontSize: 10, marginRight:8 }}>
                 {`desvio`}
               </Text>
 
-              <Text style={{ width: 100, marginLeft: 4, fontSize: 10 }}>
+              <Text style={{width: 80, fontSize: 10, textAlign:'center' }}>
                 {`obs`}
               </Text>
 
-              <Text style={{ width: 30, marginLeft: 4, fontSize: 10 }}>
+              <Text style={{width: 20, fontSize: 10, textAlign:'center',marginLeft:8 }}>
                 {`fk`}
+              </Text>
+
+              
+
+               <Text style={{ width: 30, fontSize: 10, textAlign:'center' }}>
+                {`Sign`}
+              </Text>
+
+              <Text style={{ width: 30, fontSize: 10, marginLeft:8 }}>
+                {`Status`}
               </Text>
 
             </View>
 
-          { 
-            isList
-            ?
-         
-            <FlatList
-              data={listBattery}
-              renderItem={({ item }) =>
+            {
+              isListOne
+                ?
 
-                <View style={styles.dataList}>
+                <FlatList
+                  data={listBattery}
+                  renderItem={({ item }) =>
 
-                  <View style={styles.cardList}>
+                    <View style={styles.dataList}>
 
-                    <Text style={{ width: 30, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.id_bty}`}
-                    </Text>
+                      <View style={styles.cardList}>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.tensao_bty}`}
-                    </Text>
+                        <Text style={{ width: 30, fontSize: 8 }}>
+                          {`${item.id_bty}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.condutancia_bty}`}
-                    </Text>
+                        <Text style={{ width: 30, fontSize: 8, marginRight:8 }}>
+                          {`${item.tensao_bty}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.desvio_bty}`}
-                    </Text>
+                        <Text style={{ width: 50, fontSize: 8 ,marginRight:18, textAlign:'center'}}>
+                          {`${item.condutancia_bty}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.obs_bty}`}
-                    </Text>
+                        <Text style={{ width: 30, fontSize: 8 ,marginRight:8, marginRight:8, textAlign:'center'}}>
+                          {`${item.desvio_bty}`}
+                        </Text>
 
-                    <Text style={{ width: 30, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.fk_sta}`}
-                    </Text>
+                        <Text style={{ width: 100, fontSize: 8, textAlign:'center' }}>
+                          {`${item.obs_bty}`}
+                        </Text>
 
-                  </View>
+                        <Text style={{ width:  20 , fontSize: 8 }}>
+                          {`${item.fk_sta}`}
+                        </Text>
 
+
+                       
+
+
+
+                        {
+                          item.id_bty  >  1 ?
+
+                            <FontAwesome name='signal' size={20} color={"green"} />
+
+                            :
+
+                            <FontAwesome name='signal' size={20} color={"gray"} />
+                        }
+
+
+                        {
+                          item.condutancia_bty < 4200 && item.condutancia_bty > 3980 ?
+                            <View style={styles.statusWarning}></View>
+
+                            :
+
+                            item.condutancia_bty < 3980 ?
+                              <View style={styles.statusAlert}></View>
+
+                              :
+                              <View style={styles.statusOk}></View>
+                        }
+
+
+
+
+                      </View>
+
+                    </View>
+
+                  }
+                >
+                </FlatList>
+
+                :
+                <View style={styles.contentWarning}>
+                  <Text style={styles.textWarning}>{error}</Text>
                 </View>
-
-              }
-            >
-            </FlatList>
-
-            :
-            <Text>{error}</Text>
-           }
+            }
 
 
           </View>
@@ -366,37 +416,38 @@ const getReport =  () => {
           <View style={styles.containerHeader}>
 
 
-            <View>   
-           
+            <View>
+
               <SelectList
- 
-                 setSelected={(key) =>     
-                   
-                   setFkStation(removeString(key)  )
-                 }
-            
 
-                    data={listStation}
-                    save="key"
-                    placeholder='Select Station'
-                   // onPress={getStation()} 
+                setSelected={(key) =>
 
-                    onSelect={selectStation}
-           
-                   //placeholderTextColor='#44E8C3'
-                   // boxStyles={{color:'#44E8C3'}}        
-                   // dropdownItemStyles={{color:'#44E8C3'}}
-                    boxStyles={{ backgroundColor: '#314452' }}
-           
-                    inputStyles={{ color: '#44E8C3' }}
-                    //dropdownTextStyles={{ color: '#44E8C3' }}
-                    dropdownTextStyles={{ color: 'black' }}
-               />
-                       
+                  setFkStation(removeString(key))
+                }
+
+
+                data={listStation}
+                save="key"
+                placeholder='Select Station'
+                // onPress={getStation()} 
+
+                onSelect={selectStation}
+
+                //placeholderTextColor='#44E8C3'
+                // boxStyles={{color:'#44E8C3'}}        
+                // dropdownItemStyles={{color:'#44E8C3'}}
+
+
+                boxStyles={{ backgroundColor: '#b4beb9' }}
+                inputStyles={{ color: '#000000' }}
+                //dropdownTextStyles={{ color: '#44E8C3' }}
+                dropdownTextStyles={{ color: 'black' }}
+              />
+
             </View>
 
 
-           {/* 
+            {/* 
             <View>
               <Pressable
                style={{
@@ -456,63 +507,65 @@ const getReport =  () => {
 
             </View>
 
-            { 
-             isList
-             ?
-            
-            <FlatList
-              data={report}
-              renderItem={({ item }) =>
+            {
+              isListTwo
+                ?
 
-                <View style={styles.dataList}>
+                <FlatList
+                  data={report}
+                  renderItem={({ item }) =>
 
-                  <View style={styles.cardList}>
+                    <View style={styles.dataList}>
 
-                    <Text style={{ width: 30, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.id_anl}`}
-                    </Text>
+                      <View style={styles.cardList}>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.tensao_anl}`}
-                    </Text>
+                        <Text style={{ width: 30, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.id_anl}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.corrente_anl}`}
-                    </Text>
+                        <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.tensao_anl}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.temperatura_anl}º`}
-                    </Text>
+                        <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.corrente_anl}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.obs_anl}`}
-                    </Text>
+                        <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.temperatura_anl}º`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.date_anl}`}
-                    </Text>
+                        <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.obs_anl}`}
+                        </Text>
 
-                    <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.time_anl}`}
-                    </Text>
+                        <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.date_anl}`}
+                        </Text>
 
-                    <Text style={{ width: 30, marginLeft: 4, fontSize: 8 }}>
-                      {`${item.fk_bty}`}
-                    </Text>
+                        <Text style={{ width: 100, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.time_anl}`}
+                        </Text>
 
-                  </View>
+                        <Text style={{ width: 30, marginLeft: 4, fontSize: 8 }}>
+                          {`${item.fk_bty}`}
+                        </Text>
 
+                      </View>
+
+                    </View>
+
+                  }
+                >
+                </FlatList>
+
+                :
+
+                <View style={styles.contentWarning}>
+                  <Text style={styles.textWarning}>{error}</Text>
                 </View>
 
-              }
-            >
-            </FlatList>
-
-            :
-
-            <Text>{error}</Text>
-
-           }
+            }
 
           </View>
 
