@@ -14,15 +14,17 @@ export default async function PrintPdf (report, today)  {
       // console.log(item.id_anl);
        
          reportList = reportList +
-        `
-          <td>${item.id_anl}</td>
-          <td>${item.tensao_anl}</td>
-          <td>${item.corrente_anl}</td> 
-          <td>${temperatura_anl+"º"}</td>         
-          <td>${item.obs_anl}</td>
-          <td>${item.date_anl}</td>
-          <td>${item.time_anl}</td>          
-          <td>${item.fk_bty}</td>            
+        `         
+          <tr>
+           <td>${item.id_anl}</td>
+           <td>${item.tensao_anl}</td>
+           <td>${item.corrente_anl}</td> 
+           <td>${item.temperatura_anl+"º"}</td>         
+           <td>${item.obs_anl}</td>
+           <td>${item.date_anl}</td>
+           <td>${item.time_anl}</td>          
+           <td>${item.fk_bty}</td>    
+          </tr>       
          `       
      }
      
@@ -41,8 +43,8 @@ export default async function PrintPdf (report, today)  {
 
    
     const html =
-      `
-      <!DOCTYPE html> 
+    `
+     <!DOCTYPE html> 
 
       <html>
 
@@ -52,17 +54,17 @@ export default async function PrintPdf (report, today)  {
   
           <style>
 
-            body{
+           body{
             padding: 0;
             margin: 0;
             text-align: center;    
             }
-                
+              
             
-            div {
+            main{
              width: 1000px;
-             height: 800px;             
-             padding: 20px;            
+             height: 800px;            
+             padding: 20px;         
              margin-top: 80px
             }
 
@@ -72,17 +74,20 @@ export default async function PrintPdf (report, today)  {
              width: 98%;
              padding: 5px;
              border-collapse: separate;
-             border-spacing: 2px;
-             background-color: rgba(0, 0, 0, 0.3);
+             border-spacing: 2px;             
              margin: 10px;
+             margin-top:100px;
            }
+
 
 
            th {
             font-size: 1.6em;
             text-transform: capitalize;
-            color: black;            
+            color: black;
+            background-color: white;
            }
+
 
 
            tr,
@@ -100,60 +105,54 @@ export default async function PrintPdf (report, today)  {
 
           </style>     
 
-        </head>      
+        </head> 
 
-        <body style="text-align: center;">         
-         
-          <header>
-            <h1 style="font-size: 50px; font-family: Helvetica Neue; font-weight: normal;">
+
+        <body>         
+        
+            <h1>
               Analisador de Baterias Estacionárias
-            </h1>
-          </header>
+            </h1>          
 
 
-        <main>  
+          <main>  
 
-          <div>
+            <h2>Relatório de Leitura</h2>
+
+            <h3>${today}</h3>
+
 
             <table>               
+
 
               <thead>
 
                 <tr>
-                  <td colspan="20">${today}</td>
-                </tr>
-
-                <tr>
-                  <th colspan="20">Relatório de Leitura</th>
-                </tr>
-
-                <tr>
                  <th>ID</th>
                  <th>Tensão</th>
-                 <th>Condutância</th>
-                 <th>Desvio</th>
-                 <th>Status</th>
-                 <th>Sign</th>
-               </tr>
-     
+                 <th>Corrente</th>
+                 <th>Temperatura</th>
+                 <th>Obs</th>
+                 <th>Date</th>
+                 <th>Time</th>
+                 <th>FK</th>
+               </tr>    
+
               </thead> 
 
-              <tbody id="tbody"> 
-                ${reportList}
+
+              <tbody>
+
+                <tr>              
+                 ${reportList} 
+                </tr>  
+
               </tbody>           
 
+
             </table>
-
-
-
-          </div> 
-
            
-        </main>         
-
-
-          
-        <footer></footer>
+          </main>    
         
         </body>
 

@@ -8,6 +8,7 @@ import * as Print from 'expo-print';
 
 const PdfList = async (list , ref, lastUpdate, today) => {
 
+
   var batteryList;
 
      for (let i in list) {
@@ -20,20 +21,21 @@ const PdfList = async (list , ref, lastUpdate, today) => {
         
        var status ;
 
-        if(desvio <= -20 && desvio > -44 ){
-         
-           status = "yellow";
-          
-
-        }else if ( desvio <= -45){
-         
+        if(desvio <= -20 && desvio > -44 ){         
+           status = "yellow";         
+        }else if ( desvio <= -45){         
            status = "red";
-
         }else{
-
            status = "green";
         }
 
+        var sign;
+
+         if( item.update_bty >= lastUpdate){
+              sign = "gray";
+         }else{
+              sign = "green";
+         }
 
 
          batteryList = batteryList +
@@ -45,26 +47,24 @@ const PdfList = async (list , ref, lastUpdate, today) => {
               <td>${desvio}</td> 
               <td>${item.obs_bty}</td>
 
-              <td style="
-              display: flex;
-              justify-content: center;">
-              <div 
-              style="
-              width:50px;
-              height:50px;
-              border-radius:50px;                           
-              background-color:${status}"
-              >
-              </div>
+              <td style=" display: flex; justify-content:center">          
+                <p 
+                 style="
+                  width:50px;
+                  height:50px;
+                  border-radius:50px;                                                     
+                  background-color:${status};
+                  "
+                 >
+                </p>
               </td>
 
-              <td 
-              style="              
-               font-size: 20px;             
-               color:${status}"
-               >               
-               &#128246;
-               </td>
+
+              <td>          
+                <span style="color: ${sign}; font-size:50px;">&#8874;</span>
+              </td>
+             
+
            </tr>     
          `
         
@@ -75,7 +75,8 @@ const PdfList = async (list , ref, lastUpdate, today) => {
 
 
 
-   /* 
+   /*
+   &#128246 
      const htmlContent = `
       <html>
         <body>
@@ -96,7 +97,7 @@ const PdfList = async (list , ref, lastUpdate, today) => {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-  
+            
           <style>
 
             body{
@@ -121,66 +122,56 @@ const PdfList = async (list , ref, lastUpdate, today) => {
              margin: 10px;
            }
 
-
-           th {
-            font-size: 1.6em;
-            text-transform: capitalize;
-            color: black;
-            background-color: white;
-           }
-
-
-           tr,
+          
            td {
             border: 2px solid black;
             text-align: center;
             font-family: 'Open Sans', sans-serif;
             font-weight: bold;
-            font-size: 1.1em;
-            line-height: 1.66667em;
+            font-size: 1.5em;            
             color: black;
             text-transform: capitalize;
             padding: 2px;
-           }
+           }           
 
           </style>  
    
         </head>
       
 
-        <body style="text-align: center;">         
+        <body>         
          
         
-        <main>         
+            <h1>
+              Analisador de Baterias Estacionárias
+            </h1>          
 
-          <div>
 
+          <main>
+
+              <h2>Lista de Baterias</h2>
+
+              <h3>${today}</h3>
+         
 
             <table>               
 
               <thead>
 
                 <tr>
-                  <td colspan="20">${today}</td>
-                </tr>
+                 <td>ID</td>
+                 <td>Tensão</td>
+                 <td>Condutância</td>
+                 <td>Desvio</td>
+                 <td>Obs</td>
+                 <td>Status</td>
+                 <td>Sign</td>
+               </tr> 
 
-                <tr>
-                  <th colspan="20">Lista de Baterias</th>
-                </tr>
-
-                <tr>
-                 <td colspan="1" rowspan="3">ID</td>
-                 <td colspan="1" rowspan="3">Tensão</td>
-                 <td colspan="1" rowspan="3">Condutância</td>
-                 <td colspan="1" rowspan="3">Desvio</td>
-                 <td colspan="1" rowspan="3">Obs</td>
-                 <td colspan="1" rowspan="3">Status</td>
-                 <td colspan="1" rowspan="3">Sign</td>
-               </tr>
-              
               </thead> 
 
-              <tbody id="tbody" style="color:white"> 
+
+              <tbody> 
 
                 <tr>
                   ${batteryList}
@@ -188,17 +179,10 @@ const PdfList = async (list , ref, lastUpdate, today) => {
 
               </tbody>           
 
-            </table>
-
-
-          </div> 
-
+            </table>       
            
-        </main>   
+          </main>   
               
-          
-        <footer></footer>
-
         </body>
 
       </html>        

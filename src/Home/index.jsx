@@ -34,7 +34,6 @@ import PdfReport from '../PdfReport';
 
 
 
-
 import styles from './styles';
 
 //import { LinearGradient } from 'expo-linear-gradient';
@@ -56,7 +55,7 @@ export default function Home({ navigation }) {
   var yyyy = dta.getFullYear();
   var today = yyyy + "-" + mm + "-" + dd;
 
-  const lastUpdate = 15;
+  const lastUpdate = 32;
   const ref = 3989;
 
   const {
@@ -74,6 +73,8 @@ export default function Home({ navigation }) {
   const [isListOne, setIsListOne] = useState(false);
 
   const [isListTwo, setIsListTwo] = useState(false);
+
+  const [btnPdf, setBtnPdf] = useState(false);
 
   const [error, setError] = useState("");
 
@@ -225,9 +226,15 @@ export default function Home({ navigation }) {
   const labels = [];
   const [label, setLabel] = useState([]);
 
+  
+
   const datasets = [];
   const [dataset, setDataset] = useState([]);
 
+
+
+
+    /*
   const data = {
     labels: label,
     datasets: [
@@ -238,7 +245,7 @@ export default function Home({ navigation }) {
       }
     ]
   };
-
+  */
 
 
 
@@ -285,6 +292,8 @@ export default function Home({ navigation }) {
               //console.log(diffInDays); 
               result[i].update_bty = diffInDays;
               */
+
+              
 
               result[i].update_bty = getDiffInDays(result[i].update_bty);
 
@@ -352,6 +361,8 @@ export default function Home({ navigation }) {
 
 
   const getListAnalysisByFk = async () => {
+
+    setBtnPdf(true);
 
     await fetch(endpoint + "?action=list_analysis_by_fk", {
       method: 'POST',
@@ -586,7 +597,7 @@ export default function Home({ navigation }) {
 
 
 
-
+  
 
 
   if (isLoading) {
@@ -854,9 +865,16 @@ export default function Home({ navigation }) {
 
 
 
-        <Chart value={data} />
+
+       <Chart label={label} data={[-2, 4, -45, -20, 0 ]}/> 
+
+    {/*    <Chart label={label} data={[datasets]}/> */}
+
+
+
+
         {/* 
-         
+          <Chart value={data} />
 
         <View>
 
@@ -936,26 +954,30 @@ export default function Home({ navigation }) {
               dropdownTextStyles={{ color: 'black' }}
 
             />
-
           </View>
 
 
-          <View>
+          {btnPdf?
 
-            <Pressable
+          <View>          
+             <Pressable
               style={{
                 height: 'auto',
                 width: 'auto',
                 padding: 14,
                 backgroundColor: 'gray',
                 borderRadius: 10,
-                alignItems: 'center'
-              }}
+                alignItems: 'center',                
+              }}              
               onPress={() => pdfReport()}>
               <FontAwesome name='file-pdf-o' size={20} color={"red"} />
-            </Pressable>
-
+            </Pressable>           
           </View>
+
+         :
+         <View></View>
+            }
+
 
         </View>
 

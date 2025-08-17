@@ -17,7 +17,7 @@ import styles from './styles';
 
 import { FontAwesome } from '@expo/vector-icons';
 
-import { AuthContext } from '../contexts/auth';
+import { AuthContext } from '../Contexts/auth';
 
 
 
